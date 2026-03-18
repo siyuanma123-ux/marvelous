@@ -14,8 +14,7 @@ transport model.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Optional
 
 import anndata as ad
 import numpy as np
@@ -25,48 +24,7 @@ from .niche_state import NicheStateEncoder
 from .cell_state import CellStateEncoder
 from .graphst_wrapper import GraphSTWrapper
 from .nicheformer_wrapper import NicheformerWrapper
-
-
-# State axes expected by the transport modulation layer
-STATE_AXIS_NAMES: List[str] = [
-    "barrier_integrity",
-    "inflammatory_load",
-    "ecm_remodeling",
-    "vascularization",
-    "appendage_openness",
-]
-
-
-@dataclass
-class TissueStateVector:
-    """Low-dimensional tissue state that enters the transport equation."""
-
-    barrier_integrity: float = 1.0
-    inflammatory_load: float = 0.0
-    ecm_remodeling: float = 0.0
-    vascularization: float = 0.5
-    appendage_openness: float = 0.0
-
-    # Full raw vectors for audit / debugging
-    layer_state_raw: Optional[Dict[str, np.ndarray]] = field(default=None, repr=False)
-    niche_state_raw: Optional[np.ndarray] = field(default=None, repr=False)
-    cell_state_raw: Optional[np.ndarray] = field(default=None, repr=False)
-
-    def to_array(self) -> np.ndarray:
-        return np.array(
-            [
-                self.barrier_integrity,
-                self.inflammatory_load,
-                self.ecm_remodeling,
-                self.vascularization,
-                self.appendage_openness,
-            ],
-            dtype=np.float32,
-        )
-
-    @staticmethod
-    def axis_names() -> List[str]:
-        return STATE_AXIS_NAMES
+from .state_vector import TissueStateVector, STATE_AXIS_NAMES
 
 
 class SkinStateSpace:

@@ -82,7 +82,7 @@ def load_scrna():
 
 
 def run_prediction(predictor, drug_desc, tissue_state, t_total_h=24.0):
-    from virtual_skin.atlas.state_space import TissueStateVector
+    from virtual_skin.atlas.state_vector import TissueStateVector
     sv = TissueStateVector(*tissue_state)
     result = predictor.predict(sv, drug_desc, t_total_h=t_total_h)
     return result

@@ -19,7 +19,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ..atlas.state_space import TissueStateVector, STATE_AXIS_NAMES
+from ..atlas.state_vector import TissueStateVector, STATE_AXIS_NAMES
 
 
 # Default bounds for each open transport parameter (log10 scale, µm²/s for D)

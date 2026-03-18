@@ -25,7 +25,7 @@ import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
 
-from ..atlas.state_space import TissueStateVector
+from ..atlas.state_vector import TissueStateVector
 from ..data.drug_properties import DrugDescriptor
 from .state_modulation import StateModulationNetwork, ParameterPrior
 from .layered_diffusion import LayeredDiffusionPDE, SkinLayerGeometry, TransportParameters

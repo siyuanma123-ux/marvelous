@@ -17,7 +17,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 import torch
 
-from ..atlas.state_space import TissueStateVector
+from ..atlas.state_vector import TissueStateVector
 from ..data.drug_properties import DrugDescriptor
 from .layered_diffusion import (
     LayeredDiffusionPDE,
