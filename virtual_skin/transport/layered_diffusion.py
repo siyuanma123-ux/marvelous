@@ -232,9 +232,9 @@ class LayeredDiffusionPDE:
         # Layer retention at final time
         C_final = C_profiles[-1]
         retention = {
-            "sc": float(np.trapz(C_final[layers == 0], x[layers == 0])),
-            "ve": float(np.trapz(C_final[layers == 1], x[layers == 1])),
-            "dermis": float(np.trapz(C_final[layers == 2], x[layers == 2])),
+            "sc": float(np.trapezoid(C_final[layers == 0], x[layers == 0])),
+            "ve": float(np.trapezoid(C_final[layers == 1], x[layers == 1])),
+            "dermis": float(np.trapezoid(C_final[layers == 2], x[layers == 2])),
         }
 
         # Appendage bypass contribution (simplified parallel pathway)

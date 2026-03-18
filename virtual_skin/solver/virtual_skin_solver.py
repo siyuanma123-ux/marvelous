@@ -213,7 +213,7 @@ class VirtualSkinSolver:
             steady_state_flux=jss,
             lag_time=tlag,
             layer_retention=result["layer_retention"],
-            target_layer_auc=float(np.trapz(dermis_mean, result["time_h"])),
+            target_layer_auc=float(np.trapezoid(dermis_mean, result["time_h"])),
             target_layer_cmax=float(dermis_mean.max()),
             transport_params=base_params,
         )

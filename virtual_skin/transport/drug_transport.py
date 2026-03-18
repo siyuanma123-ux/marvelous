@@ -150,7 +150,7 @@ class DrugTransportPredictor:
         dermis_mask = result["layer_ids"] == 2
         dermis_conc = result["concentration_profile"][:, dermis_mask]
         dermis_mean_conc = dermis_conc.mean(axis=1)  # mean over dermis depth
-        target_auc = float(np.trapz(dermis_mean_conc, result["time_h"]))
+        target_auc = float(np.trapezoid(dermis_mean_conc, result["time_h"]))
         target_cmax = float(dermis_mean_conc.max())
 
         return TransportPrediction(
