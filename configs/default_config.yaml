@@ -1,0 +1,131 @@
+# ============================================================
+# Omics-Constrained Virtual Skin — Default Configuration
+# ============================================================
+
+project:
+  name: "virtual_skin"
+  seed: 42
+  device: "cuda"  # "cuda" or "cpu"
+
+# ---- Skin layer geometry (µm) ----
+skin_geometry:
+  stratum_corneum:
+    thickness: 15.0        # typical SC thickness
+    num_sublayers: 10
+  viable_epidermis:
+    thickness: 80.0
+    num_sublayers: 5
+  dermis:
+    thickness: 1200.0
+    num_sublayers: 10
+  appendage:
+    fractional_area: 0.001  # follicular fraction
+
+# ---- Transport model ----
+transport:
+  time_total_hours: 48.0
+  dt_output_hours: 0.5
+  open_parameters:
+    - D_sc          # SC effective diffusivity
+    - K_sc_ve       # SC → viable epidermis partition
+    - D_ve          # viable epidermis diffusivity
+    - k_bind_dermis # dermal retention/binding
+    - k_clear_vasc  # vascular clearance
+  extended_parameters:
+    - w_appendage   # appendage bypass weight
+
+# ---- PINN solver ----
+pinn:
+  hidden_layers: [128, 128, 128, 128]
+  activation: "tanh"
+  learning_rate: 1.0e-3
+  epochs: 20000
+  num_domain: 5000
+  num_boundary: 500
+  num_initial: 200
+  loss_weights:
+    pde: 1.0
+    bc: 10.0
+    ic: 10.0
+    data: 50.0
+
+# ---- State modulation ----
+state_modulation:
+  state_axes:
+    - barrier_integrity
+    - inflammatory_load
+    - ecm_remodeling
+    - vascularization
+    - appendage_openness
+  drug_descriptors:
+    - molecular_weight
+    - logP
+    - pKa
+    - charge
+    - binding_affinity
+  modulation_network:
+    hidden_dims: [32, 16]
+    activation: "relu"
+
+# ---- Hierarchical Bayesian ----
+bayesian:
+  num_samples: 2000
+  warmup_steps: 1000
+  num_chains: 4
+  prior_scale: 0.5
+
+# ---- GraphST ----
+graphst:
+  learning_rate: 0.001
+  epochs: 600
+  dim_output: 64
+  alpha: 10
+  beta: 1
+  n_top_genes: 3000
+
+# ---- Nicheformer ----
+nicheformer:
+  dim_model: 256
+  nheads: 8
+  nlayers: 6
+  context_length: 512
+  masking_p: 0.15
+  pretrained_path: null
+
+# ---- Cell communication ----
+communication:
+  cellchat:
+    species: "human"
+    min_cells: 10
+    p_threshold: 0.05
+  commot:
+    dis_thr: 500.0
+    kernel: "exp"
+    cost_type: "euc"
+  flowsig:
+    n_gems: 5          # number of gene expression modules
+
+# ---- Hypothesis grammar ----
+grammar:
+  rule_format: "yaml"
+  confidence_threshold: 0.7
+
+# ---- Validation ----
+validation:
+  ivpt:
+    endpoints:
+      - cumulative_permeation
+      - steady_state_flux
+      - lag_time
+      - layer_retention
+      - target_layer_auc
+      - target_layer_cmax
+  blind_test:
+    holdout_fraction: 0.2
+    n_bootstrap: 1000
+  metrics:
+    - rmse
+    - mae
+    - r2
+    - coverage_90
+    - calibration_error

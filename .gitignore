@@ -1,0 +1,27 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+# Large data files (too big for GitHub)
+data/public/
+data/raw/
+data/processed/
+*.h5ad
+*.h5
+*.loom
+
+# Results (regeneratable)
+results/real_data/
+results/public_demo/
+*.png
+
+# Environment
+.env
+.venv/
+venv/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
